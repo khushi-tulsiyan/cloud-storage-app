@@ -1,31 +1,31 @@
 {
-  "name": "web",
+  "name": "backend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@repo/ui": "*",
-    "@trpc/client": "^10.45.2",
-    "next": "14.2.6",
+    "@trpc/server": "^10.45.2",
+    "drizzle-kit": "^0.24.2",
+    "drizzle-orm": "^0.33.0",
+    "next": "14.2.11",
     "next-auth": "^4.24.7",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-query": "^3.39.3",
-    "uploadthing": "^7.0.1"
+    "pg": "^8.12.0",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.6",
+    "eslint-config-next": "14.2.11",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
 }
