@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@trpc/client": "^9.27.4",
+    "@trpc/react": "^9.27.4",
     "autoprefixer": "^10.4.20",
     "next": "14.2.11",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@types/node": "^20",
