@@ -1,44 +1,33 @@
+import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from './trpc';
-import { db } from '../db';
 
-export const fileRouter = createTRPCRouter({
-  // Create file (store metadata)
-  create: publicProcedure
-    .input(z.object({ filename: z.string(), size: z.number(), userId: z.string() }))
-    .mutation(async ({ input }) => {
-      const newFile = await db.insert('files').values(input).returning('*');
-      return newFile;
+// Initialize tRPC
+const t = initTRPC.create();
+
+// Create file router
+export const fileRouter = t.router({
+  // Upload a new file
+  upload: t.procedure
+    .input(z.object({
+      filename: z.string(),
+      fileUrl: z.string(),
+      size: z.number(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      return await ctx.db.file.create({
+        data: {
+          filename: input.filename,
+          fileUrl: input.fileUrl,
+          size: input.size,
+          userId: ctx.session.user.id,
+        },
+      });
     }),
 
-  // Read file by ID
-  getById: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ input }) => {
-      const file = await db.select('files').where({ id: input.id }).first();
-      return file;
-    }),
-
-  // Delete file
-  delete: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ input }) => {
-      await db.delete('files').where({ id: input.id });
-      return { success: true };
-    }),
+  // Fetch all files for the current user
+  getAll: t.procedure.query(async ({ ctx }) => {
+    return await ctx.db.file.findMany({
+      where: { userId: ctx.session.user.id },
+    });
+  }),
 });
-
-export const fileRouter = createTRPCRouter({
-    upload: publicProcedure
-      .input(z.object({ file: z.string(), userId: z.string() }))
-      .mutation(async ({ input }) => {
-        const metadata = await handleFileUpload(input.file); // Call UploadThing or another service
-        const fileRecord = await db.insert('files').values({
-          filename: metadata.filename,
-          size: metadata.size,
-          userId: input.userId,
-        }).returning('*');
-        return fileRecord;
-      }),
-  });
-  
