@@ -1,4 +1,3 @@
-
 import { defineConfig } from 'drizzle-kit';
 
 
@@ -11,7 +10,7 @@ export default defineConfig({
       "host": "localhost",
       "port": 5432,
       "user": "cloud_user",
-      "password": "your_password",
+      "password": "2805",
       "database": "cloud_storage"
     }
   }

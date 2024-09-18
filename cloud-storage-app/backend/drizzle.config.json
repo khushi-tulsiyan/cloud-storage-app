@@ -1,9 +1,0 @@
-{
-    "schema": "./src/db/schema",  
-    "out": "./migrations",         
-    "driver": "pg",                
-    "connection": {
-      "connectionString": "postgresql://username:password@localhost:5432/mydb" 
-    }
-  }
-  

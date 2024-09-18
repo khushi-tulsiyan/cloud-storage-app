@@ -7,12 +7,12 @@ export default async function verifyLogin(req: NextApiRequest, res: NextApiRespo
   try {
     const { verified } = await verifyAuthenticationResponse({
       credential: body,
-      expectedChallenge: 'your-server-side-challenge',
-      expectedOrigin: 'http://localhost:3000',
-      expectedRPID: 'localhost',
+      expectedChallenge: 'your-server-side-challenge', // This should be a string
+      expectedOrigin: 'http://localhost:3000',          // This should be a string
+      expectedRPID: 'localhost',                        // This should be a string
       authenticator: {
-        credentialPublicKey: 'userCredentialPublicKey',
-        credentialID: 'userCredentialID',
+        credentialPublicKey: 'userCredentialPublicKey', // Ensure this is a correctly formatted string
+        credentialID: 'userCredentialID',               // Ensure this is a correctly formatted string
       },
     });
 
