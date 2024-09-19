@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^5.19.1",
     "@simplewebauthn/server": "^10.0.1",
     "@trpc/server": "^10.45.2",
     "drizzle-kit": "^0.24.2",
@@ -19,6 +20,7 @@
     "postgres": "^3.4.4",
     "react": "^18",
     "react-dom": "^18",
+    "trpc-openapi": "^1.2.0",
     "uploadthing": "^7.0.2"
   },
   "devDependencies": {

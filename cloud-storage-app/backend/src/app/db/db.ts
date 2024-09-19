@@ -1,5 +1,8 @@
 import { drizzle } from 'drizzle-orm';
 import { Pool } from 'pg';
+import { PrismaClient } from '@prisma/client';
+
+
 
 // Create a PostgreSQL connection pool
 const pool = new Pool({
@@ -12,5 +15,5 @@ const pool = new Pool({
 
 // Initialize Drizzle ORM with the PostgreSQL pool
 const db = drizzle(pool);
-
+export const prisma = new PrismaClient();
 export { db };

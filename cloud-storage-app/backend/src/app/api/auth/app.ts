@@ -1,4 +1,4 @@
-import { createTRPCRouter } from './trpc';
+import { createTRPCRouter } from '../trpc';
 import { userRouter } from './user';
 import { fileRouter } from './file';
 import { noteRouter } from './note';
@@ -8,3 +8,5 @@ export const appRouter = createTRPCRouter({
   file: fileRouter,
   note: noteRouter,
 });
+
+export type AppRouter = typeof appRouter;
