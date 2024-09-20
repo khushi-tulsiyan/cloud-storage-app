@@ -1,6 +1,6 @@
 import { NextAuthOptions } from 'next-auth';
-import GoogleP
-import { prisma } from '../db/db'; // Assuming you're using Prisma for the database
+import GoogleProvider from 'next-auth/providers/google'; // Example provider, you can add more
+import { prisma } from '../../db/db';
 
 export const authOptions: NextAuthOptions = {
   providers: [
