@@ -1,48 +1,51 @@
-// components/DocumentUpload.tsx
-import { useState, useEffect } from 'react';
-import { UploadButton } from '@uploadthing/react';
-import { trpc } from '../utils/trpc'; // Assuming tRPC setup
+import React, { useState } from 'react';
+import { trpc } from '../../../../backend/src/app/api/trpc';
 
-const DocumentUpload = () => {
-  const [documents, setDocuments] = useState([]);
+const DocumentUpload = () => { 
+  const [file, setFile] = useState<File | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
-  // Fetch documents using tRPC
-  const { data: docs, refetch } = trpc.file.getFilesByUserId.useQuery({ userId: "userId" });
+  // Ensure correct usage of tRPC mutation
+  const uploadDocument = trpc.file.uploadDocument.useMutation();
 
-  useEffect(() => {
-    if (docs) {
-      setDocuments(docs);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    setFile(selectedFile || null);
+  };
+
+  const handleUpload = async () => {
+    if (!file) {
+      setMessage('No file selected');
+      return;
     }
-  }, [docs]);
 
-  // Handle file upload success
-  const handleUploadSuccess = async (files) => {
-    await refetch(); // Refetch the document list after successful upload
+    const fileReader = new FileReader();
+    fileReader.onload = async () => {
+      const fileData = fileReader.result?.toString() || '';
+      try {
+        // Call the tRPC mutation to upload the document
+        const result = await uploadDocument.mutateAsync({
+          filename: file.name,
+          fileData: fileData,
+        });
+
+        if (result.success) {
+          setMessage(`File uploaded successfully: ${result.filename}`);
+        }
+      } catch (error) {
+        setMessage(`Failed to upload file: ${(error as Error).message}`);
+      }
+    };
+    fileReader.readAsDataURL(file);
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold">Document Upload</h2>
-
-      {/* Upload Button */}
-      <UploadButton
-        onClientUploadComplete={(res) => {
-          handleUploadSuccess(res);
-        }}
-        onUploadError={(err) => {
-          console.error('Upload failed:', err);
-        }}
-      />
-
-      {/* Document List */}
-      <h3 className="text-lg mt-4">Uploaded Documents</h3>
-      <ul>
-        {documents.map((doc) => (
-          <li key={doc.id} className="p-2 border border-gray-200">
-            {doc.filename} - {doc.size} KB
-          </li>
-        ))}
-      </ul>
+    <div>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload} disabled={uploadDocument.isLoading}>
+        {uploadDocument.isLoading ? 'Uploading...' : 'Upload Document'}
+      </button>
+      {message && <p>{message}</p>}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createContext } from '../trpc';
 
 // Initialize tRPC
 const t = initTRPC.create();

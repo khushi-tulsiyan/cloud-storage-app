@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Auth0Provider from 'next-auth/providers/auth0';
-import Passkey from '@auth/core/passkey';
+import Passkey from 'next-auth';
 
 export default NextAuth({
   providers: [

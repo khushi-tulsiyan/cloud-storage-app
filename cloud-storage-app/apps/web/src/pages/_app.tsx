@@ -1,6 +1,6 @@
 import { withTRPC } from '@trpc/next';
 import type { AppType } from 'next/app';
-import { AppRouter } from './apps/backend/src/api/trpc';
+import { AppRouter } from '/Users/INDIA/cloud-storage-app/cloud-storage-app/backend/src/app/api/trpc';
 import superjson from 'superjson';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
