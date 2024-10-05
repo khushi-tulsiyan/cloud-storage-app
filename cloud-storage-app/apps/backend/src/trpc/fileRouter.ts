@@ -1,8 +1,7 @@
-// apps/backend/trpc/fileRouter.ts
 
 import { createTRPCRouter, publicProcedure } from '../../pages/api/trpc/[trpc]'; 
 import { z } from 'zod';
-import { S3 } from 'aws-sdk'; // Import S3 if you're using AWS S3 for storage
+import { S3 } from 'aws-sdk';
 
 // Initialize S3 client (configure this based on your credentials and region)
 const s3 = new S3({
@@ -10,6 +9,12 @@ const s3 = new S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION,
 });
+
+// Ensure bucket name is defined
+const bucketName = process.env.AWS_S3_BUCKET_NAME;
+if (!bucketName) {
+  throw new Error("Missing AWS S3 Bucket Name in environment variables");
+}
 
 export const fileRouter = createTRPCRouter({
   upload: publicProcedure
@@ -53,7 +58,7 @@ export const fileRouter = createTRPCRouter({
 async function saveFileToStorage(fileName: string, fileType: string, fileData: string) {
   const buffer = Buffer.from(fileData, 'base64'); // Convert base64 to buffer
   const params = {
-    Bucket: process.env.AWS_S3_BUCKET_NAME, // Your S3 bucket name
+    Bucket: bucketName as string, // Ensure bucketName is of type string
     Key: fileName, // File name you want to save
     Body: buffer,
     ContentType: fileType,
@@ -66,7 +71,7 @@ async function saveFileToStorage(fileName: string, fileType: string, fileData: s
 
 async function getFileFromStorage(fileId: string) {
   const params = {
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Bucket: bucketName as string, // Ensure bucketName is of type string
     Key: fileId,
   };
 
@@ -83,7 +88,7 @@ async function getFileFromStorage(fileId: string) {
 
 async function deleteFileFromStorage(fileId: string) {
   const params = {
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Bucket: bucketName as string, // Ensure bucketName is of type string
     Key: fileId,
   };
 
