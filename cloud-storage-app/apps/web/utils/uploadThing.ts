@@ -1,6 +1,3 @@
-import { createUploadthing } from 'uploadthing';
+import { createUploadthing, type FileRouter } from 'uploadthing/next';
 
-export const uploadFiles = createUploadthing({
-  endpoint: "/api/upload",
-  apiKey: "your-uploadthing-api-key",
-});
+export const uploadFiles = createUploadthing();
