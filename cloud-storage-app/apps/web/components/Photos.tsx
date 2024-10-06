@@ -1,16 +1,28 @@
 import React from "react";
-import { uploadFiles } from "../utils/uploadThing";
-import { NextApiRequest } from "next";
+import { trpc } from "../utils/trpc";
 
 const Photos = () => {
+  const { mutate } = trpc.file.upload.useMutation();
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
-      await uploadFiles({
-        files,
-        params: {},
-        onError: console.error,
-        onUpload: (res: NextApiRequest) => console.log("Uploaded: ", res),
+
+      files.forEach((file) => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const fileData = reader.result as string | null;
+          if (fileData) {
+            mutate({
+              fileName: file.name,
+              fileType: file.type,
+              fileData: fileData.split(",")[1] ?? '', // Provide a default value if undefined
+            });
+          }
+        };
+
+        reader.readAsDataURL(file);
       });
     }
   };
