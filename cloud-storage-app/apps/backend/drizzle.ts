@@ -1,10 +1,29 @@
-// apps/backend/drizzle.ts
-import { drizzle } from 'drizzle-orm/mysql2';
-import { sqlite3 } from 'sqlite3';
-import { resolve } from 'path';
-import { Database } from 'sqlite3';
+// drizzle.ts
 
-const sqlitePath = resolve(__dirname, 'db/database.sqlite');
-const db = new Database(sqlitePath);
+import { createContext } from './src/context';
+import { initTRPC } from '@trpc/server';
+import { inferAsyncReturnType } from '@trpc/server';
+import { drizzle } from 'drizzle-orm/libsql';
+import sqlite3 from 'sqlite3';
 
-export const dbInstance = drizzle(db);
+
+// Initialize the SQLite3 database
+const sqlite = sqlite3.verbose();
+export const db = drizzle(new sqlite.Database('../backend/db/database'));
+
+// Define the context creation function
+export const createTRPCContext = async ({ req, res }: any) => {
+  // Add any custom logic needed here for your context, like authentication, etc.
+  return {
+    db,
+    req,
+    res,
+  };
+};
+
+// Define tRPC
+const t = initTRPC.context<inferAsyncReturnType<typeof createTRPCContext>>().create();
+
+// Export the router and other utilities
+export const router = t.router;
+export const publicProcedure = t.procedure;
