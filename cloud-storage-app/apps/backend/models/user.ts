@@ -9,7 +9,6 @@ export const User = mysqlTable("users", {
     updatedAt: timestamp("updated_at").onUpdateNow().notNull(),
 });
 
-// Define Zod schema separately if needed for validation purposes
 export const UserSchema = z.object({
     id: z.string(),
     name: z.string(),

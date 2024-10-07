@@ -1,7 +1,7 @@
 
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
-import { db } from '../../drizzle'; // Adjust this import to your Drizzle setup
+import { db } from '../../drizzle';
 import { User } from '../../models/user';
 import { Note } from '../../models/note';
 import { eq } from 'drizzle-orm'; // Make sure to import 'eq'

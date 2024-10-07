@@ -1,35 +1,25 @@
-import * as trpcNext from '@trpc/server/adapters/next';
-import { appRouter } from '../../../src/trpc/router';
 import { initTRPC } from '@trpc/server';
-import { createHTTPHandler } from '@trpc/server/adapters/standalone';
-import { z } from 'zod';
+import * as trpcNext from '@trpc/server/adapters/next';
+import { Context, createContext } from '../../../src/context';
 
-// Initialize TRPC
-const t = initTRPC.create();
+const t = initTRPC.context<Context>().create();
 
-// Create the TRPCRouter type
 export const createTRPCRouter = t.router;
-
-// Create a public procedure that doesn't require authentication
+export const router = t.router;
 export const publicProcedure = t.procedure;
 
-// Define your TRPC middleware if needed, e.g., for authentication
+// Middleware Example (can use the user from context)
 export const middleware = t.middleware;
 
-// Example of using the middleware
 export const protectedProcedure = t.procedure.use(middleware(async ({ ctx, next }) => {
-  // Implement your authentication logic here
+  if (!ctx.session?.user) {
+    throw new Error('Unauthorized');
+  }
   return next();
 }));
 
-// Optionally, set up your API handler for Next.js
-export const handler = createHTTPHandler({
-  router: createTRPCRouter({}), // This will be defined in your routers
-  createContext: () => ({}), // Define context if needed, such as user sessions
-});
-
+// Use this context in the Next.js API handler
 export default trpcNext.createNextApiHandler({
-  router: appRouter,
-  createContext: () => ({}),
+  router: createTRPCRouter({}), // Replace with your actual router
+  createContext,
 });
-

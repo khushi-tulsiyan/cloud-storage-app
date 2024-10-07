@@ -3,7 +3,7 @@ import { trpc } from '../utils/trpc';
 
 const Notes = () => {
   const [noteContent, setNoteContent] = useState('');
-  const { mutate: createNote, isLoading } = trpc.createNote.useMutation();
+  const { mutate: createNote, isLoading } = trpc.note.createNote.useMutation(); // Use `note` here
 
   const handleCreateNote = () => {
     createNote(
