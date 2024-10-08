@@ -5,13 +5,17 @@ export default NextAuth({
   providers: [
     PasskeyProvider({
       tenant: {
-        credential: {
-          type: "public-key",          
-        },
         config: {
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://example.com",
           tenantId: process.env.NEXT_PUBLIC_TENANT_ID || "your-tenant-id",
         },
+        credential: (credentialId: string) => ({
+          remove: async () => {
+            // Implement the logic to remove the credential
+            console.log(`Removing credential with ID: ${credentialId}`);
+            throw new Error("Credential removal not implemented");
+          },
+        }),
         user: (userId: string) => ({
           credentials: async () => {
             return [
@@ -20,12 +24,12 @@ export default NextAuth({
                 name: "User Credential",
                 public_key: "public-key-data",
                 attestation_type: "direct",
-                aaguid: "aaguid-value", // Add aaguid
-                created_at: "2023-10-01T00:00:00Z", // Add created_at
-                last_used_at: null, // Optional
+                aaguid: "aaguid-value",
+                created_at: "2023-10-01T00:00:00Z",
+                last_used_at: null,
                 transports: ["usb", "nfc"],
-                backup_eligible: false, // Add backup_eligible
-                backup_state: false, // Add backup_state
+                backup_eligible: false,
+                backup_state: false,
               },
             ];
           },
@@ -50,14 +54,14 @@ export default NextAuth({
               publicKey: {
                 challenge: "challenge-string",
                 rpId: "example.com",
-                allowCredentials: [],  // Matches expected empty array
+                allowCredentials: [],
                 userVerification: "required",
               },
             };
           },
           finalize: async (credential: { id: string; type: string; } & { rawId: string; clientExtensionResults?: Record<string, never>; response: any; }) => {
             return {
-              token: "generated-token",  // Add a token field as expected
+              token: "generated-token",
             };
           },
         },
@@ -82,7 +86,7 @@ export default NextAuth({
           },
           finalize: async (credential: { id: string; type: string; rawId: string; response: any; transports?: string[]; }) => {
             return {
-              token: "generated-token",  // Return token instead of success flag
+              token: "generated-token",
             };
           },
         },
