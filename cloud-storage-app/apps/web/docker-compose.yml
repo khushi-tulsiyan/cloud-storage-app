@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_BASE_URL: http://localhost:3000
+      NEXT_PUBLIC_TENANT_ID: your-tenant-id
+      NEXTAUTH_SECRET: your-nextauth-secret
+    depends_on:
+      - db
+
+  db:
+    image: sqlite:latest  # Use an appropriate database image for your app
+    volumes:
+      - db-data:/var/lib/sqlite
+
+volumes:
+  db-data:
