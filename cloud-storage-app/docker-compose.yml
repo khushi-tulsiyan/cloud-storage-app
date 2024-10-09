@@ -19,5 +19,6 @@ services:
     volumes:
       - db-data:/var/lib/sqlite
 
+
 volumes:
   db-data:
