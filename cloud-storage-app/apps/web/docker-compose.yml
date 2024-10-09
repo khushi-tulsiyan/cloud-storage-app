@@ -9,8 +9,8 @@ services:
       - "3000:3000"
     environment:
       NEXT_PUBLIC_BASE_URL: http://localhost:3000
-      NEXT_PUBLIC_TENANT_ID: your-tenant-id
-      NEXTAUTH_SECRET: your-nextauth-secret
+      NEXT_PUBLIC_TENANT_ID: e2e47d29-6130-4655-a68a-f8497e228f92
+      NEXTAUTH_SECRET: 0ZxVA+qmEeBvP2u8trVQqS/FlphymZqH4xTY0qOJq7c=
     depends_on:
       - db
 
