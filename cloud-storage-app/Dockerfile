@@ -2,7 +2,7 @@
 FROM node:18-alpine AS builder
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /apps
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -19,10 +19,10 @@ RUN npm run build
 # Use a lighter image for the runtime
 FROM node:18-alpine AS runner
 
-WORKDIR /app
+WORKDIR /apps
 
 # Copy only the build output and necessary files from the builder
-COPY --from=builder /app ./
+COPY --from=builder /apps ./
 
 # Expose the port the app runs on
 EXPOSE 3000
