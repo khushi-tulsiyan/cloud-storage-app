@@ -10,7 +10,7 @@
   "devDependencies": {
     "prettier": "^3.2.5",
     "turbo": "^2.2.3",
-    "typescript": "5.5.4"
+    "typescript": "^5.5.4"
   },
   "engines": {
     "node": ">=18"
@@ -19,5 +19,11 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@trpc/server": "^10.45.2",
+    "drizzle-orm": "^0.36.1",
+    "next": "^15.0.3",
+    "next-auth": "^4.24.10"
+  }
 }
