@@ -1,7 +1,7 @@
 // src/components/Auth/SignIn.tsx
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../auth/firebaseConfig";
+import { auth } from "../../../auth/firebaseConfig";
 import { Input, Button } from "@chakra-ui/react";
 
 export default function SignIn() {
