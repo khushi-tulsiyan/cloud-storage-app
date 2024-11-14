@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/router";
-import useFirebaseAuth from "../hooks/useFirebaseAuth";
+import useFirebaseAuth from "../../src/app/hooks/useFirebaseAuth";
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const { user } = useFirebaseAuth();

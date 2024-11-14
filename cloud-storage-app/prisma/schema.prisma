@@ -22,6 +22,7 @@ model User {
 model File {
   id        String   @id @default(uuid())
   userId    String
+  url       String
   filePath  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
