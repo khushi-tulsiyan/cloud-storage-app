@@ -1,6 +1,7 @@
 import { auth } from "../../auth";
 import { signOut } from "firebase/auth";
 
+
 export default function UserProfile() {
   const handleSignOut = () => {
     signOut(auth);
@@ -9,7 +10,7 @@ export default function UserProfile() {
   return (
     <div>
       <p>User Profile</p>
-      <button onClick={handleSignOut}>Sign Out</button>
+      <button onClick={handleSignOut}> Sign Out </button>
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "firebase-admin/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase-admin/storage";
+import { getStorage } from "firebase-admin/storage";
 import { app } from "../../../../lib/firebase";
 
 const auth = getAuth(app);
-const storage = getStorage(app);
+const storage = getStorage(app).bucket();
 
 const verifyUser = async (token: string) => {
   const decodedToken = await auth.verifyIdToken(token);
@@ -28,21 +28,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: "File or file name missing" });
       }
 
-      const storageRef = ref(storage, `drive/${userId}/${name}`);
-      await uploadBytes(storageRef, Buffer.from(file, "base64"));
-      const fileURL = await getDownloadURL(storageRef);
+      const fileBuffer = Buffer.from(file, "base64");
+      const destination = `drive/${userId}/${name}`;
+      const fileObject = storage.file(destination);
+
+      await fileObject.save(fileBuffer, { contentType: 'application/octet-stream' });
+      const fileURL = `https://storage.googleapis.com/${storage.name}/${destination}`;
 
       return res.status(200).json({ message: "File uploaded", fileURL });
     } else if (req.method === "GET") {
       // Retrieve files for user
-      const userFiles = `drive/${userId}/`;
-      const files = await storage.bucket().getFiles({ prefix: userFiles });
-      const fileURLs = await Promise.all(
-        files[0].map(async (file) => {
-          const url = await getDownloadURL(file);
-          return { name: file.name, url };
-        })
-      );
+      const [files] = await storage.getFiles({ prefix: `drive/${userId}/` });
+      const fileURLs = files.map(file => ({
+        name: file.name,
+        url: `https://storage.googleapis.com/${storage.name}/${file.name}`
+      }));
 
       return res.status(200).json({ files: fileURLs });
     } else {

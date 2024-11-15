@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { storage, uploadFile } from "../../backend/storage/index";
+import { uploadFile } from "../../backend/storage/index";
 
 export default function PhotosSection() {
   const [photos, setPhotos] = useState<string[]>([]);
@@ -16,7 +16,7 @@ export default function PhotosSection() {
     <div>
       <input type="file" onChange={handleFileUpload} />
       <div>
-        {photos.map((url) => (
+      {photos.map((url) => (
           <img key={url} src={url} alt="Uploaded photo" />
         ))}
       </div>
