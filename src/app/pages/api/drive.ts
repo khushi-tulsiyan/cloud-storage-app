@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const userId = await verifyUser(token);
 
     if (req.method === "POST") {
-      // Upload file to drive
+      
       const { file, name } = req.body;
       if (!file || !name) {
         return res.status(400).json({ message: "File or file name missing" });
@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(200).json({ message: "File uploaded", fileURL });
     } else if (req.method === "GET") {
-      // Retrieve files for user
+      
       const [files] = await storage.getFiles({ prefix: `drive/${userId}/` });
       const fileURLs = files.map(file => ({
         name: file.name,
